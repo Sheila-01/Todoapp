@@ -14,13 +14,20 @@ if (todos === null) {
   return todos;
 }
 else{
-  return todos;
+  return todos; 
 }
 }
+createStore()
 
 function createTodo() {
   let todos = createStore();
-  todos.push(input.value); //push the inputted text into the todolist
+  let todoInput = input.value.trim();
+  if( todoInput == '')
+  {
+    alert("Please type something")
+    return false;
+  }
+  todos.push(todoInput); //push the inputted text into the todolist
   localStorage.setItem("todolist", JSON.stringify(todos)); //update the todo list
   // return todos;
 }
@@ -31,11 +38,37 @@ function displayTodo() {
   todolist = JSON.parse(todolist);
   console.log(todolist);
 
-  todolist.forEach(function(item) {
+  // const delbtn = document.createElement("button");
+  // delbtn.innerHTML = "delete";
+
+  todolist.forEach(function(item,index) {
     const myli = document.createElement("li");
+    const delbtn = document.createElement("button");
+    delbtn.innerHTML = "delete";
+    delbtn.className = 'remove'
+    delbtn.id = index
     myli.innerHTML = item;
     mylist.appendChild(myli);
+    myli.appendChild(delbtn);
   });
+
+  // delbtn.onclick = deleteTodo;
 }
 addbtn.onclick = createTodo;
 displayTodo();
+
+const deletebtnList = document.querySelectorAll('.remove')
+  console.log(deletebtnList)
+
+  function deleteTodo(){
+   let todos = createStore();
+   todos.splice(this.id, 1)
+   localStorage.setItem("todolist", JSON.stringify(todos));
+   location.reload(true)
+   console.log(this.id);
+  }
+
+  deletebtnList.forEach(function(item){
+    item.onclick = deleteTodo
+  })
+  // deleteTodo();
